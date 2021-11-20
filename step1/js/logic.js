@@ -18,19 +18,19 @@ function makeFeatures(earthquakeData) {
     }
 
     function chooseColor(depth) {
-        if (depth < 10) return "#99FF99";
-        else if (depth > 10 && depth < 30) return "#66FF00";
-        else if (depth > 30 && depth < 50) return "CCCC00";
-        else if (depth > 50 && depth < 70) return "FFCC00";
-        else if (depth > 70 && depth < 90) return "800026";
-        else return "#FF000";
+        if (depth < 10) return "#a3f600";
+        else if (depth > 10 && depth < 30) return "#dcf400";
+        else if (depth > 30 && depth < 50) return "#f7db11";
+        else if (depth > 50 && depth < 70) return "#fdb72a";
+        else if (depth > 70 && depth < 90) return "#fca35d";
+        else return "#ff5f65";
     }
 
     function geojsonMarkerOptions(features) {
         return {
             radius: circleRadius(parseInt(features.properties.mag)),
             fillColor: chooseColor(features.geometry.coordinates[2]),
-            color: "#000",
+            color: "#B0B5B3",
             weight: 1,
             opacity: 1,
             fillOpacity: 0.7
@@ -74,7 +74,7 @@ function makeMap(earthquakes) {
     // Create our map, giving it the streetmap and earthquakes layers to display on load.
     var myMap = L.map("map", {
         center: [37.7749, -122.4194],
-        zoom: 4,
+        zoom: 5,
         layers: [street, earthquakes]
     });
 
@@ -86,10 +86,9 @@ function makeMap(earthquakes) {
     // Add a legend
     var legend = L.control({position: 'bottomright'});
 
-    legend.onAdd = function(myMap) {
+    legend.onAdd = function () {
         var div = L.DomUtil.create('div', 'info legend'),
-        grades = [-10, 10, 30, 50, 70, 90],
-        labels = [];
+        grades = [-10, 10, 30, 50, 70, 90];
 
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
