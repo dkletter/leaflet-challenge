@@ -4,7 +4,16 @@ const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.g
 // Perform a GET request to the query URL
 d3.json(url).then((data) => {
     makeFeatures(data.features);
-})
+});
+
+function chooseColor(depth) {
+    if (depth < 10) return "#a3f600";
+    else if (depth > 10 && depth < 30) return "#dcf400";
+    else if (depth > 30 && depth < 50) return "#f7db11";
+    else if (depth > 50 && depth < 70) return "#fdb72a";
+    else if (depth > 70 && depth < 90) return "#fca35d";
+    else return "#ff5f65";
+}
 
 function makeFeatures(earthquakeData) {
 	// Define a function that we want to run once for each feature in the features array
@@ -15,15 +24,6 @@ function makeFeatures(earthquakeData) {
 
     function circleRadius(magnitude) {
         return magnitude * 4;
-    }
-
-    function chooseColor(depth) {
-        if (depth < 10) return "#a3f600";
-        else if (depth > 10 && depth < 30) return "#dcf400";
-        else if (depth > 30 && depth < 50) return "#f7db11";
-        else if (depth > 50 && depth < 70) return "#fdb72a";
-        else if (depth > 70 && depth < 90) return "#fca35d";
-        else return "#ff5f65";
     }
 
     function geojsonMarkerOptions(features) {
