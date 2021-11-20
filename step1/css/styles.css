@@ -14,6 +14,7 @@ html {
     color: #555;
     padding: 18px;
     background-color: #fff;
+    border-radius: 6px;
 }
 
 .legend i {
