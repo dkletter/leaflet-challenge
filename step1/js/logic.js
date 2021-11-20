@@ -23,7 +23,7 @@ function makeFeatures(earthquakeData) {
     }
 
     function circleRadius(magnitude) {
-        return magnitude * 4;
+        return magnitude * 8;
     }
 
     function geojsonMarkerOptions(features) {
