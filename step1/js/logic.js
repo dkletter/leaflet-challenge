@@ -1,5 +1,5 @@
 // Store our API endpoint
-const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
 // Perform a GET request to the query URL
 d3.json(url).then((data) => {
@@ -13,8 +13,35 @@ function makeFeatures(earthquakeData) {
         layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}<br>Magnitude ${feature.properties.mag}</p>`);
     }
 
+    function circleRadius(magnitude) {
+        return magnitude * 4;
+    }
+
+    function chooseColor(depth) {
+        if (depth < 10) return "#99FF99";
+        else if (depth > 10 && depth < 30) return "#66FF00";
+        else if (depth > 30 && depth < 50) return "CCCC00";
+        else if (depth > 50 && depth < 70) return "FFCC00";
+        else if (depth > 70 && depth < 90) return "800026";
+        else return "#FF000";
+    }
+
+    function geojsonMarkerOptions(features) {
+        return {
+            radius: circleRadius(parseInt(features.properties.mag)),
+            fillColor: chooseColor(features.geometry.coordinates[2]),
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.7
+        };
+    }
+
 	// Create a GeoJSON layer that contains the features array on the earthquakeData object
     var earthquakes = L.geoJSON(earthquakeData, {
+        pointToLayer: function (features, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions(features));
+        },
 		// Run the onEachFeature function once for each piece of data in the array
         onEachFeature: onEachFeature
     });
@@ -47,7 +74,7 @@ function makeMap(earthquakes) {
     // Create our map, giving it the streetmap and earthquakes layers to display on load.
     var myMap = L.map("map", {
         center: [37.7749, -122.4194],
-        zoom: 5,
+        zoom: 4,
         layers: [street, earthquakes]
     });
 
@@ -55,4 +82,21 @@ function makeMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
+
+    // Add a legend
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function(myMap) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [-10, 10, 30, 50, 70, 90],
+        labels = [];
+
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + chooseColor(grades[i] +1) + '"></i>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+        return div;
+    };
+
+    legend.addTo(myMap);
 }
