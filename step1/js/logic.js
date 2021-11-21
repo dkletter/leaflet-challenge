@@ -6,6 +6,7 @@ d3.json(url).then((data) => {
     makeFeatures(data.features);
 });
 
+// Define colors for markers and legend
 function chooseColor(depth) {
     if (depth < 10) return "#a3f600";
     else if (depth > 10 && depth < 30) return "#dcf400";
