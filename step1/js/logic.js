@@ -12,7 +12,7 @@ function chooseColor(depth) {
     else if (depth > 30 && depth < 50) return "#f7db11";
     else if (depth > 50 && depth < 70) return "#fdb72a";
     else if (depth > 70 && depth < 90) return "#fca35d";
-    else return "#ff5f65";
+    else return "#ff0000";
 }
 
 function makeFeatures(earthquakeData) {
@@ -23,7 +23,7 @@ function makeFeatures(earthquakeData) {
     }
 
     function circleRadius(magnitude) {
-        return magnitude * 8;
+        return magnitude * 8;      
     }
 
     function geojsonMarkerOptions(features) {
