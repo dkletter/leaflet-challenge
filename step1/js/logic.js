@@ -19,14 +19,16 @@ function chooseColor(depth) {
 function makeFeatures(earthquakeData) {
 	// Define a function that we want to run once for each feature in the features array
     function onEachFeature(feature, layer) {
-  		// Give each feature a popup that describes the place and time of the earthquake
+  		// Give each feature a popup that describes the place, time, magnitude, and depth of the earthquake
         layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><ul><li>${new Date(feature.properties.time)}</li><li>Magnitude: ${feature.properties.mag}</li><li>Depth: ${feature.geometry.coordinates[2]}</li></ul>`);
     }
 
+    // Define a function to adjust the circle radius by its magnitude
     function circleRadius(magnitude) {
         return magnitude * 8;      
     }
 
+    // Set the marker characteristics
     function geojsonMarkerOptions(features) {
         return {
             radius: circleRadius(parseInt(features.properties.mag)),
