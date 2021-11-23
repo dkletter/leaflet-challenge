@@ -8,19 +8,19 @@ d3.json(url).then((data) => {
 
 // Define colors for markers and legend
 function chooseColor(depth) {
-    if (depth < 10) return "#a3f600";
-    else if (depth > 10 && depth < 30) return "#dcf400";
-    else if (depth > 30 && depth < 50) return "#f7db11";
-    else if (depth > 50 && depth < 70) return "#fdb72a";
-    else if (depth > 70 && depth < 90) return "#fca35d";
-    else return "#ff0000";
+    if (depth >= 90) return "#ff0000";
+    else if (depth >= 70) return "#fca35d";
+    else if (depth >= 50) return "#fdb72a";
+    else if (depth >= 30) return "#f7db11";
+    else if (depth >= 10) return "#dcf400";
+    else return "#a3f600";
 }
 
 function makeFeatures(earthquakeData) {
 	// Define a function that we want to run once for each feature in the features array
     function onEachFeature(feature, layer) {
   		// Give each feature a popup that describes the place and time of the earthquake
-        layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}<br>Magnitude ${feature.properties.mag}</p>`);
+        layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><ul><li>${new Date(feature.properties.time)}</li><li>Magnitude: ${feature.properties.mag}</li><li>Depth: ${feature.geometry.coordinates[2]}</li></ul>`);
     }
 
     function circleRadius(magnitude) {
